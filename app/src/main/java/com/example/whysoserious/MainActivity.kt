@@ -1,64 +1,58 @@
 package com.example.whysoserious
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
+import android.app.*
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.widget.Button
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
+import android.widget.Toast
+import android.widget.ToggleButton
+import com.example.whysoserious.Constant.Companion.ALARM_TIMER
+import com.example.whysoserious.Constant.Companion.NOTIFICATION_ID
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val CHANNEL_ID = "testChannel01"   // Channel for notification
-    private var notificationManager: NotificationManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        createNotificationChannel(CHANNEL_ID, "testChannel", "this is a test Channel")
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
-        val button = findViewById<Button>(R.id.button)
-        button.setOnClickListener {
-            displayNotification()
-        }
+        val intent = Intent(this,MyReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this, NOTIFICATION_ID, intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
+        val button = findViewById<ToggleButton>(R.id.button)
 
-
-
-
-
-    }
-
-    private fun displayNotification() {
-        val notificationId = 45
-
-        var notification = Notification.Builder(this, CHANNEL_ID) // 알림객체
-            .setSmallIcon(android.R.drawable.star_on) // 작은아이콘
-            .setContentTitle("한번 미소를 지어보세요! :)") //제목
-            .setContentText("마스크를 쓰고있다면 쉽게 할수있겠네요..!") //본문텍스트
-//            .setStyle(NotificationCompat.BigTextStyle().bigText("내가 좀 말이 많죠?!"))
-            .setPriority(Notification.PRIORITY_DEFAULT)
-            .build()
-
-        notificationManager?.notify(notificationId, notification)
-    }
-
-    private fun createNotificationChannel(channelId: String, name: String, channelDescription: String) {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT // set importance
-            val channel = NotificationChannel(channelId, name, importance).apply {
-                description = channelDescription
+        // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
+        button.setOnCheckedChangeListener { _, check ->
+            val toastMessage = if (check) {
+                val triggerTime = (SystemClock.elapsedRealtime() // 기기가 부팅된 후 경과한 시간 사용
+                        + ALARM_TIMER * 1000) // ms 이기 때문에 초단위로 변환 (*1000)
+                alarmManager.set(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    triggerTime,
+                    pendingIntent
+                ) // set : 일회성 알림
+                "$ALARM_TIMER 초 후에 알림이 발생합니다."
+            } else {
+                alarmManager.cancel(pendingIntent)
+                "알림 예약을 취소하였습니다."
             }
-            // Register the channel with the system
-            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager?.createNotificationChannel(channel)
+
+            /*
+            1. ELAPSED_REALTIME : ELAPSED_REALTIME 사용. 절전모드에 있을 때는 알람을 발생시키지 않고 해제되면 발생시킴.
+            2. ELAPSED_REALTIME_WAKEUP : ELAPSED_REALTIME 사용. 절전모드일 때도 알람을 발생시킴.
+            3. RTC : Real Time Clock 사용. 절전모드일 때는 알람을 발생시키지 않음.
+            4. RTC_WAKEUP : Real Time Clock 사용. 절전모드 일 때도 알람을 발생시킴.
+             */
+
+            Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
         }
     }
 }
+

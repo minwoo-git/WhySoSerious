@@ -26,6 +26,12 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             displayNotification()
         }
+
+
+
+
+
+
     }
 
     private fun displayNotification() {
@@ -36,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             .setContentTitle("한번 미소를 지어보세요! :)") //제목
             .setContentText("마스크를 쓰고있다면 쉽게 할수있겠네요..!") //본문텍스트
 //            .setStyle(NotificationCompat.BigTextStyle().bigText("내가 좀 말이 많죠?!"))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(Notification.PRIORITY_DEFAULT)
             .build()
 
         notificationManager?.notify(notificationId, notification)

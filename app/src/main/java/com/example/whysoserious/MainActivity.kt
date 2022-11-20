@@ -19,15 +19,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmManager2 = getSystemService(ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(this,MyReceiver::class.java)
+        intent.putExtra("id",1111)
+        intent.putExtra("text","FIRST MESSAGE")
+
+        val intent2 = Intent(this,MyReceiver::class.java)
+        intent2.putExtra("id",2222)
+        intent2.putExtra("text","SECOND MESSAGE")
+
         val pendingIntent = PendingIntent.getBroadcast(
             this, NOTIFICATION_ID, intent,
+            //PendingIntent.FLAG_NO_CREATE
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val pendingIntent2 = PendingIntent.getBroadcast(
-            this, 2, intent,
+            this, 2, intent2,
+            //PendingIntent.FLAG_NO_CREATE
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
@@ -50,8 +60,8 @@ class MainActivity : AppCompatActivity() {
                     set(Calendar.MINUTE, 3)
                 }
 
-                val triggerT = (SystemClock.elapsedRealtime()) + ALARM_TIMER * 1000
-                val triggerT2 = (SystemClock.elapsedRealtime()) + ALARM_TIMER * 4 * 1000
+                val triggerT = System.currentTimeMillis() + 5 * 1000
+                val triggerT2 = System.currentTimeMillis() + 10  * 1000
 
 
                 // With setInexactRepeating(), you have to use one of the AlarmManager interval
@@ -64,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                     pendingIntent
                 )
 
-                alarmManager.set(
+                alarmManager2.set(
                     AlarmManager.RTC_WAKEUP,
                     //calendar2.timeInMillis,
                     triggerT2,

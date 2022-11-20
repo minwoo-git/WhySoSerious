@@ -26,6 +26,11 @@ class MainActivity : AppCompatActivity() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val pendingIntent2 = PendingIntent.getBroadcast(
+            this, 2, intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         val button = findViewById<ToggleButton>(R.id.button)
 
         // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
@@ -35,29 +40,37 @@ class MainActivity : AppCompatActivity() {
                 // Set the alarm to start at approximately 2:00 p.m.
                 val calendar1: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 15)
-                    set(Calendar.MINUTE, 2)
+                    set(Calendar.HOUR_OF_DAY, 17)
+                    set(Calendar.MINUTE, 1)
                 }
+
                 val calendar2: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 15)
-                    set(Calendar.MINUTE, 5)
+                    set(Calendar.HOUR_OF_DAY, 17)
+                    set(Calendar.MINUTE, 3)
                 }
+
+                val triggerT = (SystemClock.elapsedRealtime()) + ALARM_TIMER * 1000
+                val triggerT2 = (SystemClock.elapsedRealtime()) + ALARM_TIMER * 4 * 1000
+
+
                 // With setInexactRepeating(), you have to use one of the AlarmManager interval
                 // constants--in this case, AlarmManager.INTERVAL_DAY.
-                alarmManager.setRepeating(
+                alarmManager.set(
                     AlarmManager.RTC_WAKEUP,
-                    calendar1.timeInMillis,
-                    AlarmManager.INTERVAL_DAY,
-                    pendingIntent
-                )
-                alarmManager.setRepeating(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar2.timeInMillis,
-                    AlarmManager.INTERVAL_DAY,
+                    //calendar1.timeInMillis,
+                    triggerT,
+                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
                     pendingIntent
                 )
 
+                alarmManager.set(
+                    AlarmManager.RTC_WAKEUP,
+                    //calendar2.timeInMillis,
+                    triggerT2,
+                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                    pendingIntent2
+                )
 
 
                 "$ALARM_TIMER 초 후에 알림이 발생합니다."

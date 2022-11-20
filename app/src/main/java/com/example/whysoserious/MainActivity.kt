@@ -33,20 +33,32 @@ class MainActivity : AppCompatActivity() {
             val toastMessage = if (check) {
 
                 // Set the alarm to start at approximately 2:00 p.m.
-                val calendar: Calendar = Calendar.getInstance().apply {
+                val calendar1: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 14)
-                    set(Calendar.MINUTE, 8)
+                    set(Calendar.HOUR_OF_DAY, 15)
+                    set(Calendar.MINUTE, 2)
                 }
-
+                val calendar2: Calendar = Calendar.getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.HOUR_OF_DAY, 15)
+                    set(Calendar.MINUTE, 5)
+                }
                 // With setInexactRepeating(), you have to use one of the AlarmManager interval
                 // constants--in this case, AlarmManager.INTERVAL_DAY.
-                alarmManager.setInexactRepeating(
+                alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
-                    calendar.timeInMillis,
-                    AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                    calendar1.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
                     pendingIntent
                 )
+                alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar2.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
+                    pendingIntent
+                )
+
+
 
                 "$ALARM_TIMER 초 후에 알림이 발생합니다."
             } else {

@@ -31,13 +31,23 @@ class MainActivity : AppCompatActivity() {
         // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
         button.setOnCheckedChangeListener { _, check ->
             val toastMessage = if (check) {
-                val triggerTime = (SystemClock.elapsedRealtime() // 기기가 부팅된 후 경과한 시간 사용
-                        + ALARM_TIMER * 1000) // ms 이기 때문에 초단위로 변환 (*1000)
-                alarmManager.set(
-                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    triggerTime,
+
+                // Set the alarm to start at approximately 2:00 p.m.
+                val calendar: Calendar = Calendar.getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.HOUR_OF_DAY, 14)
+                    set(Calendar.MINUTE, 8)
+                }
+
+                // With setInexactRepeating(), you have to use one of the AlarmManager interval
+                // constants--in this case, AlarmManager.INTERVAL_DAY.
+                alarmManager.setInexactRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    AlarmManager.INTERVAL_FIFTEEN_MINUTES,
                     pendingIntent
-                ) // set : 일회성 알림
+                )
+
                 "$ALARM_TIMER 초 후에 알림이 발생합니다."
             } else {
                 alarmManager.cancel(pendingIntent)

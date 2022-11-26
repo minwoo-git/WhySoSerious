@@ -24,18 +24,18 @@ class MainActivity : AppCompatActivity() {
 
         val intent1 = Intent(this,MyReceiver::class.java)
         intent1.putExtra("id",1111)
-        intent1.putExtra("text","FIRST MESSAGE")
+        intent1.putExtra("text","111입꼬리만 살짝 올려보세요!")
 
         val intent2 = Intent(this,MyReceiver::class.java)
         intent2.putExtra("id",2222)
-        intent2.putExtra("text","SECOND MESSAGE")
+        intent2.putExtra("text","222입꼬리만 살짝 올려보세요!")
 
         val intent3 = Intent(this,MyReceiver::class.java)
         intent3.putExtra("id",3333)
-        intent3.putExtra("text","THIRD MESSAGE")
+        intent3.putExtra("text","333입꼬리만 살짝 올려보세요!")
 
         val pendingIntent1 = PendingIntent.getBroadcast(
-            this, NOTIFICATION_ID, intent1,
+            this, 1, intent1,
             //PendingIntent.FLAG_NO_CREATE
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         val pendingIntent3 = PendingIntent.getBroadcast(
-            this, 4, intent3,
+            this, 3, intent3,
             //PendingIntent.FLAG_NO_CREATE
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -58,48 +58,76 @@ class MainActivity : AppCompatActivity() {
         button.setOnCheckedChangeListener { _, check ->
             val toastMessage = if (check) {
 
-//                // Set the alarm to start at approximately 2:00 p.m.
-//                val calendar1: Calendar = Calendar.getInstance().apply {
-//                    timeInMillis = System.currentTimeMillis()
-//                    set(Calendar.HOUR_OF_DAY, 17)
-//                    set(Calendar.MINUTE, 1)
-//                }
-//
-//                val calendar2: Calendar = Calendar.getInstance().apply {
-//                    timeInMillis = System.currentTimeMillis()
-//                    set(Calendar.HOUR_OF_DAY, 17)
-//                    set(Calendar.MINUTE, 3)
-//                }
+                // Set the alarm to start at approximately 2:00 p.m.
+                val calendar1: Calendar = Calendar.getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.HOUR_OF_DAY, 19)
+                    set(Calendar.MINUTE, 23)
+                }
 
-                val triggerT1 = System.currentTimeMillis() + 5 * 1000
-                val triggerT2 = System.currentTimeMillis() + 10  * 1000
-                val triggerT3 = System.currentTimeMillis() + 15  * 1000
+                val calendar2: Calendar = Calendar.getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.HOUR_OF_DAY, 19)
+                    set(Calendar.MINUTE, 25)
+                }
+
+                val calendar3: Calendar = Calendar.getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.HOUR_OF_DAY, 19)
+                    set(Calendar.MINUTE, 27)
+                }
+
+//                val triggerT1 = System.currentTimeMillis() + 5 * 1000
+//                val triggerT2 = System.currentTimeMillis() + 10  * 1000
+//                val triggerT3 = System.currentTimeMillis() + 15  * 1000
 
                 // With setInexactRepeating(), you have to use one of the AlarmManager interval
                 // constants--in this case, AlarmManager.INTERVAL_DAY.
-                alarmManager1.set(
+                alarmManager1.setInexactRepeating(
                     AlarmManager.RTC_WAKEUP,
-                    //calendar1.timeInMillis,
-                    triggerT1,
-                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                    calendar1.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
                     pendingIntent1
                 )
 
-                alarmManager2.set(
+                alarmManager2.setInexactRepeating(
                     AlarmManager.RTC_WAKEUP,
-                    //calendar2.timeInMillis,
-                    triggerT2,
-                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                    calendar2.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
                     pendingIntent2
                 )
 
-                alarmManager3.set(
+                alarmManager3.setInexactRepeating(
                     AlarmManager.RTC_WAKEUP,
-                    //calendar2.timeInMillis,
-                    triggerT3,
-                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                    calendar3.timeInMillis,
+                    AlarmManager.INTERVAL_DAY,
                     pendingIntent3
                 )
+
+
+//                alarmManager1.set(
+//                    AlarmManager.RTC_WAKEUP,
+//                    calendar1.timeInMillis,
+//                    //triggerT1,
+//                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+//                    pendingIntent1
+//                )
+//
+//                alarmManager2.set(
+//                    AlarmManager.RTC_WAKEUP,
+//                    calendar2.timeInMillis,
+//                    //triggerT2,
+//                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+//                    pendingIntent2
+//                )
+//
+//                alarmManager3.set(
+//                    AlarmManager.RTC_WAKEUP,
+//                    calendar3.timeInMillis,
+//                    //triggerT3,
+//                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+//                    pendingIntent3
+//                )
 
                 "알림 예약이 시작되었습니다."
             } else {

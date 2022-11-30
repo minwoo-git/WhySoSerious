@@ -24,15 +24,15 @@ class MainActivity : AppCompatActivity() {
 
         val intent1 = Intent(this,MyReceiver::class.java)
         intent1.putExtra("id",1111)
-        intent1.putExtra("text","111입꼬리만 살짝 올려보세요!")
+        intent1.putExtra("text","한번 가볍게 입꼬리만 살짝 올려보세요!1")
 
         val intent2 = Intent(this,MyReceiver::class.java)
         intent2.putExtra("id",2222)
-        intent2.putExtra("text","222입꼬리만 살짝 올려보세요!")
+        intent2.putExtra("text","한번 가볍게 입꼬리만 살짝 올려보세요!2")
 
         val intent3 = Intent(this,MyReceiver::class.java)
         intent3.putExtra("id",3333)
-        intent3.putExtra("text","333입꼬리만 살짝 올려보세요!")
+        intent3.putExtra("text","한번 가볍게 입꼬리만 살짝 올려보세요!3")
 
         val pendingIntent1 = PendingIntent.getBroadcast(
             this, 1, intent1,
@@ -61,20 +61,20 @@ class MainActivity : AppCompatActivity() {
                 // Set the alarm to start at approximately 2:00 p.m.
                 val calendar1: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 19)
-                    set(Calendar.MINUTE, 23)
+                    set(Calendar.HOUR_OF_DAY, 11)
+                    set(Calendar.MINUTE, 0)
                 }
 
                 val calendar2: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 19)
-                    set(Calendar.MINUTE, 25)
+                    set(Calendar.HOUR_OF_DAY, 16)
+                    set(Calendar.MINUTE, 0)
                 }
 
                 val calendar3: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
                     set(Calendar.HOUR_OF_DAY, 19)
-                    set(Calendar.MINUTE, 27)
+                    set(Calendar.MINUTE, 0)
                 }
 
 //                val triggerT1 = System.currentTimeMillis() + 5 * 1000

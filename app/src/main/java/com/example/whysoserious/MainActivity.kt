@@ -1,17 +1,14 @@
 package com.example.whysoserious
 
-import android.app.*
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.SystemClock
-import android.widget.Button
 import android.widget.Toast
 import android.widget.ToggleButton
-import com.example.whysoserious.Constant.Companion.ALARM_TIMER
-import com.example.whysoserious.Constant.Companion.NOTIFICATION_ID
+import androidx.appcompat.app.AppCompatActivity
 import java.util.*
-import kotlin.math.min
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,44 +16,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val alarmManager1 = getSystemService(ALARM_SERVICE) as AlarmManager
-        val alarmManager2 = getSystemService(ALARM_SERVICE) as AlarmManager
-        val alarmManager3 = getSystemService(ALARM_SERVICE) as AlarmManager
-
-        val intent1 = Intent(this,MyReceiver::class.java)
-        intent1.putExtra("id",1111)
-        intent1.putExtra("text","한번 가볍게 입꼬리만 살짝 올려보세요!1")
-
-        val intent2 = Intent(this,MyReceiver::class.java)
-        intent2.putExtra("id",2222)
-        intent2.putExtra("text","한번 가볍게 입꼬리만 살짝 올려보세요!2")
-
-        val intent3 = Intent(this,MyReceiver::class.java)
-        intent3.putExtra("id",3333)
-        intent3.putExtra("text","한번 가볍게 입꼬리만 살짝 올려보세요!3")
-
-        val pendingIntent1 = PendingIntent.getBroadcast(
-            this, 1, intent1,
-            //PendingIntent.FLAG_NO_CREATE
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val pendingIntent2 = PendingIntent.getBroadcast(
-            this, 2, intent2,
-            //PendingIntent.FLAG_NO_CREATE
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val pendingIntent3 = PendingIntent.getBroadcast(
-            this, 3, intent3,
-            //PendingIntent.FLAG_NO_CREATE
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
         val button = findViewById<ToggleButton>(R.id.button)
-
+        button.isChecked = UpdateState("Test")
         // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
         button.setOnCheckedChangeListener { _, check ->
+            RadioStateSave("Test", check)
             var toastMessage = "알람 중지"
             if (check)
             {
@@ -110,6 +74,20 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun RadioStateSave(key: String, value: Boolean) {
+        val sharedPreferences = getSharedPreferences(
+            "Button_State",
+            MODE_PRIVATE
+        ) // "Button_State"라는 이름으로 파일생성, MODE_PRIVATE는 자기 앱에서만 사용하도록 설정하는 기본값
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(key, value) // 키와 값을 boolean으로 저장
+        editor.apply() // 실제로 저장
+    }
+    private fun UpdateState(key: String): Boolean {
+        val sharedPreferences = getSharedPreferences("Button_State", MODE_PRIVATE)
+        return sharedPreferences.getBoolean(key, false)
     }
 
 }

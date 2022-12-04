@@ -61,20 +61,20 @@ class MainActivity : AppCompatActivity() {
                 // Set the alarm to start at approximately 2:00 p.m.
                 val calendar1: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 11)
-                    set(Calendar.MINUTE, 0)
+                    set(Calendar.HOUR_OF_DAY, 15)
+                    set(Calendar.MINUTE, 37)
                 }
 
                 val calendar2: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 16)
-                    set(Calendar.MINUTE, 0)
+                    set(Calendar.HOUR_OF_DAY, 15)
+                    set(Calendar.MINUTE, 38)
                 }
 
                 val calendar3: Calendar = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.HOUR_OF_DAY, 19)
-                    set(Calendar.MINUTE, 0)
+                    set(Calendar.HOUR_OF_DAY, 15)
+                    set(Calendar.MINUTE, 39)
                 }
 
 //                val triggerT1 = System.currentTimeMillis() + 5 * 1000
@@ -107,24 +107,24 @@ class MainActivity : AppCompatActivity() {
 
 //                alarmManager1.set(
 //                    AlarmManager.RTC_WAKEUP,
-//                    calendar1.timeInMillis,
-//                    //triggerT1,
+//                    //calendar1.timeInMillis,
+//                    triggerT1,
 //                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 //                    pendingIntent1
 //                )
 //
 //                alarmManager2.set(
 //                    AlarmManager.RTC_WAKEUP,
-//                    calendar2.timeInMillis,
-//                    //triggerT2,
+//                    //calendar2.timeInMillis,
+//                    triggerT2,
 //                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 //                    pendingIntent2
 //                )
 //
 //                alarmManager3.set(
 //                    AlarmManager.RTC_WAKEUP,
-//                    calendar3.timeInMillis,
-//                    //triggerT3,
+//                    //calendar3.timeInMillis,
+//                    triggerT3,
 //                    //AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 //                    pendingIntent3
 //                )

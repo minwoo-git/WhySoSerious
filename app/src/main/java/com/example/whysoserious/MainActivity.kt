@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
@@ -16,20 +17,35 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val imageview = findViewById<ImageView>(R.id.imageView)
+        if(UpdateState("Test")) {
+            imageview.setImageResource(R.drawable.smileface);
+        }
+        else {
+            imageview.setImageResource(R.drawable.sadface);
+        }
         val button = findViewById<ToggleButton>(R.id.button)
         button.isChecked = UpdateState("Test")
         // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력
         button.setOnCheckedChangeListener { _, check ->
             RadioStateSave("Test", check)
+
             var toastMessage = "알람 중지"
             if (check)
             {
                 toastMessage = "알람 예약"
             }
-            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 17, 28, check)
-            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 17, 29, check)
+
+            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 11, 30, check)
+            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 14, 30, check)
             makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 17, 30, check)
 
+            if(check) {
+                imageview.setImageResource(R.drawable.smileface);
+            }
+            else {
+                imageview.setImageResource(R.drawable.sadface);
+            }
 
             /*
             1. ELAPSED_REALTIME : ELAPSED_REALTIME 사용. 절전모드에 있을 때는 알람을 발생시키지 않고 해제되면 발생시킴.
@@ -65,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             alarmManager.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
         }

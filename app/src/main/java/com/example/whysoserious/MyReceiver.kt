@@ -40,7 +40,7 @@ class MyReceiver : BroadcastReceiver() {
         createNotificationChannel()
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.star_on) // 아이콘
+            .setSmallIcon(android.R.drawable.star_big_on) // 아이콘
             .setContentTitle(num.toString()) // 제목
             .setContentText("내용 입니다.") // 내용
             //.setContentIntent(contentPendingIntent)

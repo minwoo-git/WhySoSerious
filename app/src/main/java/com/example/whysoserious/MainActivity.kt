@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
             {
                 toastMessage = "알람 예약"
             }
-            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 16, 6, check)
-            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 16, 7, check)
-            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 16, 8, check)
+            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 17, 28, check)
+            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 17, 29, check)
+            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 17, 30, check)
 
 
             /*
@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, MyReceiver::class.java)
+
         intent.putExtra("id", id)
         intent.putExtra("text", text + id)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             alarmManager.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
-                AlarmManager.INTERVAL_DAY,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
                 pendingIntent
             )
         }

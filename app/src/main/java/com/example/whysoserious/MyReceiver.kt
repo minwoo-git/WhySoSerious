@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.whysoserious.Constant.Companion.CHANNEL_ID
 import com.example.whysoserious.Constant.Companion.NOTIFICATION_ID
+import java.util.*
 
 class Constant {
     companion object {
@@ -27,18 +28,20 @@ class MyReceiver : BroadcastReceiver() {
 
     lateinit var notificationManager: NotificationManager
 
+
     override fun onReceive(context: Context, intent: Intent) {
         notificationManager = context.getSystemService(
             Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val id = intent.getIntExtra("id",0)
         val text = intent.getStringExtra("text")
-
+        val random = Random()
+        val num = random.nextInt(1000)
         createNotificationChannel()
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.star_on) // 아이콘
-            .setContentTitle(text) // 제목
+            .setContentTitle(num.toString()) // 제목
             .setContentText("내용 입니다.") // 내용
             //.setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

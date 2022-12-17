@@ -1,13 +1,20 @@
 package com.example.whysoserious
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import java.util.*
 
 
@@ -16,6 +23,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // 아래 채널 id 는 다른 곳에서도 똑같아야함.
+        createChannel("Notification_Channel_id", "Notification_Channel")
 
         val imageview = findViewById<ImageView>(R.id.imageView)
         if(UpdateState("Test")) {
@@ -36,9 +46,9 @@ class MainActivity : AppCompatActivity() {
                 toastMessage = "알람 예약"
             }
 
-            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 11, 30, check)
-            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 14, 30, check)
-            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 17, 30, check)
+            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 15, 28, check)
+            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 15, 29, check)
+            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 15, 30, check)
 
             if(check) {
                 imageview.setImageResource(R.drawable.smileface);
@@ -68,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         val pendingIntent = PendingIntent.getBroadcast(
             this, id, intent,
             //PendingIntent.FLAG_NO_CREATE
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
@@ -78,16 +88,26 @@ class MainActivity : AppCompatActivity() {
 
         if (check)
         {
-            alarmManager.setInexactRepeating(
+//            alarmManager.setInexactRepeating(
+//                AlarmManager.RTC_WAKEUP,
+//                calendar.timeInMillis,
+//                AlarmManager.INTERVAL_DAY,
+//                pendingIntent
+//            )
+            alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
-                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
+
         }
         else
         {
             alarmManager.cancel(pendingIntent)
+            val notificationManager = getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager.cancelNotifications()
         }
 
 
@@ -105,6 +125,33 @@ class MainActivity : AppCompatActivity() {
     private fun UpdateState(key: String): Boolean {
         val sharedPreferences = getSharedPreferences("Button_State", MODE_PRIVATE)
         return sharedPreferences.getBoolean(key, false)
+    }
+
+    private fun createChannel(channelId: String, channelName: String) {
+        // TODO: Step 1.6 START create a channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                // TODO: Step 2.4 change importance
+                NotificationManager.IMPORTANCE_HIGH
+            )// TODO: Step 2.6 disable badges for this channel
+                .apply {
+                    setShowBadge(false)
+                }
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = "Notification Channel 입니다. "
+
+            val notificationManager = getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+
+        }
+        // TODO: Step 1.6 END create a channel
     }
 
 }

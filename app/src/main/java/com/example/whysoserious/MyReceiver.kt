@@ -35,25 +35,8 @@ class MyReceiver : BroadcastReceiver() {
 
         val id = intent.getIntExtra("id",0)
         val text = intent.getStringExtra("text")
-        val random = Random()
-        val num = random.nextInt(1000)
-        createNotificationChannel()
 
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.star_big_on) // 아이콘
-            .setContentTitle(num.toString()) // 제목
-            .setContentText("내용 입니다.") // 내용
-            //.setContentIntent(contentPendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
-
-        notificationManager.notify(id, builder.build())
-
-
-
-        //deliverNotification(context)
-        //deliverNotification2(context)
+        notificationManager.sendNotification(id, context)
     }
 
     // Notification 등록

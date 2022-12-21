@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import android.widget.ToggleButton
@@ -46,9 +47,9 @@ class MainActivity : AppCompatActivity() {
                 toastMessage = "알람 예약"
             }
 
-            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 15, 28, check)
-            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 15, 29, check)
-            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 15, 30, check)
+            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 11, 30, check)
+            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 15, 30, check)
+            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 19, 30, check)
 
             if(check) {
                 imageview.setImageResource(R.drawable.smileface);
@@ -85,6 +86,8 @@ class MainActivity : AppCompatActivity() {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
         }
+        intent.putExtra("hour", hour)
+        intent.putExtra("minute", minute)
 
         if (check)
         {
@@ -94,7 +97,12 @@ class MainActivity : AppCompatActivity() {
 //                AlarmManager.INTERVAL_DAY,
 //                pendingIntent
 //            )
-            alarmManager.setExact(
+//            alarmManager.setExact(
+//                AlarmManager.RTC_WAKEUP,
+//                calendar.timeInMillis,
+//                pendingIntent
+//            )
+            alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
                 pendingIntent

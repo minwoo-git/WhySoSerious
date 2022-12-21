@@ -7,15 +7,18 @@ import java.util.*
 
 fun NotificationManager.sendNotification(notification_id: Int, applicationContext: Context)
 {
+    val stringArray : Array<String> = arrayOf(
+        "a", "b", "c", "d", "e", "f", "g", "h","i", "j", "k", "l", "m", "n", "o"
+    )
     val random = Random()
-    val num = random.nextInt(1000)
+    val num = random.nextInt(15)
     val builder = NotificationCompat.Builder(
         applicationContext,
         "Notification_Channel_id"
     )
         .setSmallIcon(android.R.drawable.star_big_on) // 아이콘
-        .setContentTitle(num.toString()) // 제목
-        .setContentText("내용 입니다.") // 내용
+        .setContentTitle(notification_id.toString() + "Make a Smile") // 제목
+        .setContentText(stringArray[num]) // 내용
         //.setContentIntent(contentPendingIntent)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setAutoCancel(true)

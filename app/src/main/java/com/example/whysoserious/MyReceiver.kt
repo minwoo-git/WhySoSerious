@@ -1,5 +1,6 @@
 package com.example.whysoserious
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,9 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.example.whysoserious.Constant.Companion.CHANNEL_ID
 import com.example.whysoserious.Constant.Companion.NOTIFICATION_ID
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 class Constant {
@@ -35,8 +40,31 @@ class MyReceiver : BroadcastReceiver() {
 
         val id = intent.getIntExtra("id",0)
         val text = intent.getStringExtra("text")
-
+        val hour = intent.getIntExtra("hour", -1)
+        val minute = intent.getIntExtra("minute", -1)
         notificationManager.sendNotification(id, context)
+
+        val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, id, intent,
+            //PendingIntent.FLAG_NO_CREATE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+        }
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+//        val dateTime = LocalDateTime.now()
+//        val nextDate = dateTime.plusDays(1).toEpochSecond(ZoneOffset.UTC)
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+
     }
 
     // Notification 등록

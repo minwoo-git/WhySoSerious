@@ -42,23 +42,34 @@ class MyReceiver : BroadcastReceiver() {
         val text = intent.getStringExtra("text")
         val hour = intent.getIntExtra("hour", -1)
         val minute = intent.getIntExtra("minute", -1)
+        val temp = intent.getSerializableExtra("calendar")
+
         notificationManager.sendNotification(id, context)
 
         val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
-        val pendingIntent = PendingIntent.getBroadcast(
-            context, id, intent,
-            //PendingIntent.FLAG_NO_CREATE
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+
+        Log.d("hour and day", hour.toString() + " " + minute.toString())
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
         }
         calendar.add(Calendar.DAY_OF_MONTH, 1)
+
+        var nextalarm = "" + calendar.get(Calendar.YEAR)
+        nextalarm += " " + calendar.get(Calendar.MONTH)
+        nextalarm += " " + calendar.get(Calendar.DAY_OF_MONTH)
+        nextalarm += " " + calendar.get(Calendar.HOUR_OF_DAY)
+        nextalarm += " " + calendar.get(Calendar.MINUTE)
+        Log.d("next alarm ", nextalarm)
 //        val dateTime = LocalDateTime.now()
 //        val nextDate = dateTime.plusDays(1).toEpochSecond(ZoneOffset.UTC)
 
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, id, intent,
+            //PendingIntent.FLAG_NO_CREATE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,

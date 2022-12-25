@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity() {
                 toastMessage = "알람 예약"
             }
 
-            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 11, 30, check)
-            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 15, 30, check)
-            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 19, 30, check)
+            makeNotification(1, "한번 가볍게 입꼬리만 올려보세요", 8, 45, check)
+            makeNotification(2, "한번 가볍게 입꼬리만 올려보세요", 13, 10, check)
+            makeNotification(3, "한번 가볍게 입꼬리만 올려보세요", 18, 10, check)
 
             if(check) {
                 imageview.setImageResource(R.drawable.smileface);
@@ -76,18 +76,19 @@ class MainActivity : AppCompatActivity() {
 
         intent.putExtra("id", id)
         intent.putExtra("text", text + id)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this, id, intent,
-            //PendingIntent.FLAG_NO_CREATE
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        intent.putExtra("hour", hour)
+        intent.putExtra("minute", minute)
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
         }
-        intent.putExtra("hour", hour)
-        intent.putExtra("minute", minute)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            this, id, intent,
+            //PendingIntent.FLAG_NO_CREATE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
         if (check)
         {

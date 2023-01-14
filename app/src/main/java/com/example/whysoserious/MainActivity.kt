@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import java.util.*
 
-
+// alarmFix branch created
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         else {
             imageview.setImageResource(R.drawable.sadface);
         }
+
         val button = findViewById<ToggleButton>(R.id.button)
         button.isChecked = UpdateState("Test")
         // 토글버튼 활성화 시 알림을 생성하고 토스트 메세지로 출력

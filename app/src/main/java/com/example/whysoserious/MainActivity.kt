@@ -85,6 +85,11 @@ class MainActivity : AppCompatActivity() {
             set(Calendar.MINUTE, minute)
         }
 
+        //만약 실행시간이 이미 지났다면 다음날부터
+        if (Calendar.getInstance().after(calendar)) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
         val pendingIntent = PendingIntent.getBroadcast(
             this, id, intent,
             //PendingIntent.FLAG_NO_CREATE
